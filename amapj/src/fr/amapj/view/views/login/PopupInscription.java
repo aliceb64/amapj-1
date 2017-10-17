@@ -74,13 +74,13 @@ public class PopupInscription extends FormPopup {
 
 		// Construction des champs
 
-		addLabel("Veuillez remplir les champs suivant relatifs à votre inscription<br/><br/>", ContentMode.HTML);
+		addLabel("Veuillez remplir les champs suivant relatifs ï¿½ votre inscription<br/><br/>", ContentMode.HTML);
 
 		addTextField("Nom*", "nom");
 
-		addTextField("Nom chèque*", "nom_paiement");
+		addTextField("Nom chï¿½que*", "nom_paiement");
 
-		addTextField("Prénom*", "prenom");
+		addTextField("Prï¿½nom*", "prenom");
 
 		addTextField("E-mail*", "email");
 
@@ -126,7 +126,7 @@ public class PopupInscription extends FormPopup {
 
 		us.createNewUser(userDTO, false, false);
 
-	    Notification.show("Félicitation, vous êtes inscrit", Type.WARNING_MESSAGE);
+	    Notification.show("Fï¿½licitation, vous ï¿½tes inscrit", Type.WARNING_MESSAGE);
 	    
 	}
 

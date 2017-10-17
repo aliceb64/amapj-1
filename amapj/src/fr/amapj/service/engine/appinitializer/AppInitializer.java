@@ -46,6 +46,7 @@ import org.quartz.Trigger;
 
 import fr.amapj.common.DateUtils;
 import fr.amapj.common.StackUtils;
+import fr.amapj.common.ParamUtils;
 import fr.amapj.model.engine.db.DbManager;
 import fr.amapj.service.services.appinstance.DemarrageAppInstanceService;
 import fr.amapj.service.services.backupdb.BackupDatabaseService;
@@ -147,6 +148,8 @@ public class AppInitializer implements ServletContextListener
 		new DemarrageAppInstanceService().startAllDbs();
 		logger.info("Fin de démarrage des bases additionnelles");
 				
+		// Récupération des config
+		ParamUtils.init("/Users/antoine/IUT/workspace/amapj/src/config.json");
 		
 		// Demarrage des deamons
 		logger.info("Debut de démarrage des démons");

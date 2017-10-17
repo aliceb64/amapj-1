@@ -37,6 +37,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import fr.amapj.common.ParamUtils;
 import fr.amapj.service.services.authentification.PasswordManager;
 import fr.amapj.service.services.parametres.ParametresService;
 import fr.amapj.view.engine.popup.formpopup.FormPopup;
@@ -222,10 +223,12 @@ public class LoginPart {
 			hLayout.setComponentAlignment(lostPwd, Alignment.BOTTOM_LEFT);
 
 			Button signUp = new Button("Inscrivez-vous.");
-
-			hLayout.addComponent(signUp);
-
-			hLayout.setComponentAlignment(signUp, Alignment.BOTTOM_RIGHT);
+			
+			if(ParamUtils.config.isRegisterEnabled) {
+				hLayout.addComponent(signUp);
+				hLayout.setComponentAlignment(signUp, Alignment.BOTTOM_RIGHT);
+			}
+			
 			layout.addComponent(pan);
 
 			signUp.addClickListener(new ClickListener()

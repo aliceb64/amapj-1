@@ -18,7 +18,7 @@
  * 
  * 
  */
- package fr.amapj.view.engine.grid.currencyvector;
+package fr.amapj.view.engine.grid.currencyvector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +51,8 @@ import fr.amapj.view.engine.popup.corepopup.CorePopup.PopupType;
 import fr.amapj.view.engine.popup.formpopup.OnSaveException;
 import fr.amapj.view.engine.tools.BaseUiTools;
 import fr.amapj.view.engine.widgets.CurrencyTextFieldConverter;
+
+import fr.amapj.common.ParamUtils;
 
 /**
  * Popup pour la saisie des quantites 
@@ -499,9 +501,8 @@ abstract public class PopupCurrencyVector extends CorePopup
 				tf.setWidth((param.largeurCol - 10) + "px");
 				shortCutManager.registerTextField(tf);
 				cells.add(tf);
-				
 				// Si derniere ligne : on desactive la saisie , sauf si pas de recalcul
-				if ((lig==param.nbLig-1) && (param.computeLastLine==true) )
+				if (((lig==param.nbLig-1) && (param.computeLastLine==true)) || ParamUtils.config.canConsumerChangePaymentValues == false )
 				{
 					tf.setEnabled(false);
 					lastLineTextField = tf;

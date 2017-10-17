@@ -18,7 +18,7 @@
  * 
  * 
  */
- package fr.amapj.view.views.compte;
+package fr.amapj.view.views.compte;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -28,6 +28,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import fr.amapj.common.ParamUtils;
 import fr.amapj.service.services.authentification.PasswordManager;
 import fr.amapj.service.services.moncompte.MonCompteService;
 import fr.amapj.service.services.utilisateur.UtilisateurDTO;
@@ -115,7 +116,9 @@ public class MonCompteView extends FrontOfficeView implements PopupListener
 
 		prenom = addTextField("Votre prÃ©nom ",form1);
 		nom = addTextField("Votre nom ",form1);
-		nom_cheque = addTextField("Votre nom sur le chèque", form1); 
+		if(ParamUtils.config.displayNomCheque) {
+			nom_cheque = addTextField("Votre nom sur le chï¿½que", form1); 
+		}
 		 		
 		
 		// Bloc Adresse mail  
