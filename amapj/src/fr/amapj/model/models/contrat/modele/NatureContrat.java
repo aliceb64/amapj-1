@@ -29,10 +29,7 @@ public enum NatureContrat
 	ABONNEMENT,
 	
 	//  
-	LIBRE,
-
-	
-	CARTE_PREPAYEE;
+	LIBRE;
 	
 	
 	
@@ -51,10 +48,6 @@ public enum NatureContrat
 			add(LIBRE, "Choix pour chaque date","Dans ce mode, l'adhérent peut choisir les quantités livrées pour chaque date de livraison.<br/>"
 					+ "Après la fin des inscriptions, le contrat n'est plus modifiable et la date de fin des inscriptions est obligatoirement avant la date de la première livraison.<br/>"
 					+ "Ce mode peut être utilisé pour les commandes de pains, de fromage, ce qui permet à l'adhérent de changer de type de pain par exemple suivant les dates.");
-			
-			add(CARTE_PREPAYEE, "Carte prépayée","Dans ce mode, l'adhérent peut choisir les quantités livrées pour chaque date de livraison , et il peut modifier son contrat même après la date de fin des inscriptions pour les livraisons à venir.<br/>"
-					+ "Par exemple, l'adhérent peut modifier jusqu'à mardi pour une livraison le samedi.<br/>"
-					+ "Ce mode devrait être utilisé de façon exceptionnelle ou pour les ajustements.");
 		}
 	}	
 }

@@ -53,13 +53,7 @@ public class MesCartesPrepayeesService
 	 * @return
 	 */
 	public CartePrepayeeDTO computeCartePrepayee(ModeleContrat mc, EntityManager em,Date now)
-	{
-		if (mc.nature!=NatureContrat.CARTE_PREPAYEE)
-		{
-			return null;
-		}
-		
-		
+	{		
 		CartePrepayeeDTO dto = new CartePrepayeeDTO();
 		
 		Query q = em.createQuery("select mcd from ModeleContratDate mcd WHERE mcd.modeleContrat=:mc order by mcd.dateLiv , mcd.id");

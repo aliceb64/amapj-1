@@ -103,22 +103,9 @@ public class MesContratsService
 		
 		List<ModeleContrat> mcs1 = q.getResultList();
 		
-		// On récupère ensuite la liste de tous les modeles de contrats de type CARTE_PREPAYEE 
-		// disponibles (cad à l'état ACTIF et dont il reste au moins une date de livraison dans le futur)  
-		q = em.createQuery("select distinct(mcd.modeleContrat) from ModeleContratDate mcd " +
-				"WHERE mcd.modeleContrat.etat=:etat and mcd.modeleContrat.nature=:t1 " +
-				"and mcd.dateLiv>=:d "+
-				"order by  mcd.modeleContrat.nom ,  mcd.modeleContrat.id");
-		q.setParameter("etat",EtatModeleContrat.ACTIF);
-		q.setParameter("t1",NatureContrat.CARTE_PREPAYEE);
-		q.setParameter("d",d);
-		
-		List<ModeleContrat> mcs2 = q.getResultList();
-		
 		//
 		List<ModeleContrat> mcs = new ArrayList<ModeleContrat>();
 		mcs.addAll(mcs1);
-		mcs.addAll(mcs2);
 
 		// On récupère ensuite la liste de tous les contrats de cet utilisateur
 		Query q2 = em.createQuery("select c from Contrat c " +
@@ -282,19 +269,10 @@ public class MesContratsService
 	{
 		NatureContrat nature = mc.nature;
 		
-		// Cas de la carte prépayée
-		if (nature==NatureContrat.CARTE_PREPAYEE)
-		{
-			return cartePrepayeeDTO.nbLigModifiable>0;
-		}
-		// Autre cas
-		else
-		{
 			Date dateFinInscription = mc.getDateFinInscription();
 			Date d = DateUtils.addHour(dateFinInscription,23);
 			d = DateUtils.addMinute(d, 59);
 			return  d.after(now);
-		}
 	}
 	
 	
@@ -309,28 +287,7 @@ public class MesContratsService
 			return false;
 		}
 
-		
-		NatureContrat nature = contrat.getModeleContrat().nature;
-	
-		// Cas de la carte prépayée 
-		if (nature==NatureContrat.CARTE_PREPAYEE)
-		{
-			// On verifie si il y a des lignes non modifiables avec des quantités non nulles
-			Date d = DateUtils.suppressTime(now);
-			d = DateUtils.addDays(d, contrat.getModeleContrat().cartePrepayeeDelai);
-			
-			Query q = em.createQuery("select count(cc) from ContratCell cc  WHERE cc.contrat=:c and cc.modeleContratDate.dateLiv<=:d");
-			q.setParameter("c",contrat);
-			q.setParameter("d",d);
-			
-			int count = SQLUtils.toInt(q.getSingleResult());
-			return (count==0);
-		}
-		// Autre cas
-		else
-		{
 			return isModifiable;
-		}
 	}
 	
 	

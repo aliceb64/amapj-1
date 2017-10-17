@@ -18,7 +18,7 @@
  * 
  * 
  */
- package fr.amapj.view.views.gestioncontrat.editorpart;
+package fr.amapj.view.views.gestioncontrat.editorpart;
 
 import java.util.Collections;
 import java.util.Date;
@@ -64,17 +64,17 @@ public class GestionContratEditorPart extends WizardFormPopup
 	protected ModeleContratDTO modeleContrat;
 
 	private boolean creerAPartirDeMode;
-	
+
 	private Searcher prod;
-	
+
 	private List<Producteur> allowedProducteurs;
 
 	static public enum Step
 	{
 		INFO_GENERALES, DATE_LIVRAISON, DATE_FIN_INSCRIPTION , CHOIX_PRODUITS, DETAIL_PAIEMENT;	
 	}
-	
-	
+
+
 	@Override
 	protected void configure()
 	{
@@ -84,8 +84,8 @@ public class GestionContratEditorPart extends WizardFormPopup
 		add(Step.CHOIX_PRODUITS, ()->drawChoixProduits());
 		add(Step.DETAIL_PAIEMENT , ()->drawDetailPaiement());
 	}
-	
-	
+
+
 	public GestionContratEditorPart()
 	{
 	}
@@ -96,7 +96,7 @@ public class GestionContratEditorPart extends WizardFormPopup
 	public GestionContratEditorPart(Long id,List<Producteur> allowedProducteurs)
 	{
 		this.allowedProducteurs = allowedProducteurs;
-		
+
 		setWidth(80);
 		popupTitle = "Création d'un contrat";
 
@@ -122,30 +122,30 @@ public class GestionContratEditorPart extends WizardFormPopup
 		item = new BeanItem<ModeleContratDTO>(modeleContrat);
 
 	}
-	
-	
+
+
 
 	private void drawInfoGenerales()
 	{
 		// Titre
 		setStepTitle("les informations générales");
-		
+
 		// Liste des validators
 		IValidator len_1_100 = new StringLengthValidator(1, 100);
 		IValidator len_1_255 = new StringLengthValidator(1, 255);
 		IValidator uniq = new UniqueInDatabaseValidator(ModeleContrat.class,"nom",null);
 		IValidator notNull = new NotNullValidator();
 		IValidator prodValidator = new ProducteurAvecProduitValidator();
-		
-		
-		
+
+
+
 		// Champ 1
 		addTextField("Nom du contrat", "nom",len_1_100,uniq);
 
 
 		// Champ 2
 		addTextField("Description du contrat", "description",len_1_255);
-		
+
 		//
 		addComboEnumField("Nature du contrat", "nature",notNull);
 
@@ -161,26 +161,22 @@ public class GestionContratEditorPart extends WizardFormPopup
 		addComboEnumField("Fréquence des livraisons", "frequence",notNull);
 
 	}
-	
+
 	private String checkInfoGenerales()
 	{
-		if ((modeleContrat.nature==NatureContrat.CARTE_PREPAYEE) && (modeleContrat.frequence==FrequenceLivraison.UNE_SEULE_LIVRAISON))
-		{
-			return "Il n'est pas possible de faire un contrat Carte prépayée avec une seule date de livraison";
-		}
 		return null;
 	}
-	
+
 
 	private void drawDateLivraison()
 	{
 		// Titre
 		setStepTitle("les dates de livraison");
-		
+
 		// Liste des validators
 		IValidator notNull = new NotNullValidator();
 
-		
+
 		if (modeleContrat.frequence==FrequenceLivraison.UNE_SEULE_LIVRAISON)
 		{
 			addDateField("Date de la livraison", "dateDebut",notNull);
@@ -189,7 +185,7 @@ public class GestionContratEditorPart extends WizardFormPopup
 		{
 			IValidator size = new CollectionSizeValidator<DateModeleContratDTO>(1, null);
 			IValidator noDuplicates = new CollectionNoDuplicates<DateModeleContratDTO>(e->e.dateLiv);
-								
+
 			//
 			addCollectionEditorField("Liste des dates", "dateLivs", DateModeleContratDTO.class,size,noDuplicates);
 			addColumn("dateLiv", "Date",FieldType.DATE, null,new ColumnNotNull<DateModeleContratDTO>(e->e.dateLiv));			
@@ -200,8 +196,8 @@ public class GestionContratEditorPart extends WizardFormPopup
 			addDateField("Date de la dernière livraison", "dateFin",notNull);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Retourne null si tout est ok, un message sinon
 	 * @return
@@ -230,45 +226,27 @@ public class GestionContratEditorPart extends WizardFormPopup
 			}
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	protected void drawFinInscription()
 	{
-		if (modeleContrat.nature==NatureContrat.CARTE_PREPAYEE)
-		{
-			//
-			modeleContrat.dateFinInscription = null;
-			
-			// Titre
-			setStepTitle("Contrat Carte prépayée - Délai pour modification du contrat");
-			
-			addIntegerField("Délai en jour pour modification du contrat avant livraison", "cartePrepayeeDelai");
-			
-			addLabel("Votre contrat est de type Carte prepayée, c'est à dire que l'adhérent peut modifier le contrat même après le début des livraisons.<br/>"
-					+ "Ce champ vous permet d'indiquer le délai entre la dernière modification possible et la livraison<br/>"
-					+ "Par exemple, si les livraisons sont le samedi et si vous mettez 2 dans ce champ, alors l'adhérent pourra alors modifier "
-					+ "son contrat pour cette livraison jusqu'au mercredi soir minuit", ContentMode.HTML);
-		}
-		else
-		{	
-			// Titre
-			setStepTitle("la date de fin des inscriptions");
-			
-			IValidator notNull = new NotNullValidator();
-			Date firstLiv = getFirstLiv();
-			IValidator dateRange = new DateRangeValidator(null, firstLiv);
-			
-			// Champ 4
-			addDateField("Date de fin des inscriptions", "dateFinInscription",notNull,dateRange);
-			
-			addLabel("Cette date doit obligatoirement être avant la date de la première livraison", ContentMode.HTML);
-		}
+		// Titre
+		setStepTitle("la date de fin des inscriptions");
+
+		IValidator notNull = new NotNullValidator();
+		Date firstLiv = getFirstLiv();
+		IValidator dateRange = new DateRangeValidator(null, firstLiv);
+
+		// Champ 4
+		addDateField("Date de fin des inscriptions", "dateFinInscription",notNull,dateRange);
+
+		addLabel("Cette date doit obligatoirement être avant la date de la première livraison", ContentMode.HTML);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Calcule la date de la première livraison
 	 */
@@ -295,58 +273,58 @@ public class GestionContratEditorPart extends WizardFormPopup
 		{
 			modeleContrat.produits.addAll(new GestionContratService().getInfoProduitModeleContrat(idProducteur));
 		}
-		
-		
+
+
 		// Titre
 		setStepTitle("la liste des produits et des prix");
-				
+
 		// 
-		
+
 		IValidator size = new CollectionSizeValidator<LigneContratDTO>(1, null);
 		IValidator noDuplicates = new CollectionNoDuplicates<LigneContratDTO>(e->e.produitId,e->new ProduitService().prettyString(e.produitId));
-							
+
 		//
 		addCollectionEditorField("Produits", "produits", LigneContratDTO.class,size,noDuplicates);
-		
+
 		addColumnSearcher("produitId", "Nom du produit",FieldType.SEARCHER, null,SearcherList.PRODUIT,prod,new ColumnNotNull<LigneContratDTO>(e->e.produitId));
 		addColumn("prix", "Prix du produit", FieldType.CURRENCY, null,new ColumnNotNull<LigneContratDTO>(e->e.prix));	
-		
+
 	}
-	
-	
-	
+
+
+
 	private void drawDetailPaiement()
 	{
 		setStepTitle("les informations sur le paiement");
-		
+
 		// Liste des validators
 		IValidator notNull = new NotNullValidator();
 		IValidator len_0_2048 = new StringLengthValidator(0, 2048);
 		IValidator len_0_255 = new StringLengthValidator(0, 255);
 
-		
 
-			addTextField("Ordre du chèque", "libCheque",len_0_255);
-			
-			if (modeleContrat.frequence==FrequenceLivraison.UNE_SEULE_LIVRAISON)
-			{
-				PopupDateField p = addDateField("Date de remise du chèque", "dateRemiseCheque",notNull);
-				p.setValue(modeleContrat.dateDebut);
-			}
-			else
-			{
-				PopupDateField p = addDateField("Date de remise des chèques", "dateRemiseCheque",notNull);
-				p.setValue(modeleContrat.dateFinInscription);
-				
-				p = addDateField("Date du premier paiement", "premierCheque",notNull);
-				p.setValue(proposeDatePremierPaiement());
-				
-				p = addDateField("Date du dernier paiement", "dernierCheque",notNull);
-				p.setValue(proposeDateDernierPaiement()); 
-			}
+
+		addTextField("Ordre du chèque", "libCheque",len_0_255);
+
+		if (modeleContrat.frequence==FrequenceLivraison.UNE_SEULE_LIVRAISON)
+		{
+			PopupDateField p = addDateField("Date de remise du chèque", "dateRemiseCheque",notNull);
+			p.setValue(modeleContrat.dateDebut);
+		}
+		else
+		{
+			PopupDateField p = addDateField("Date de remise des chèques", "dateRemiseCheque",notNull);
+			p.setValue(modeleContrat.dateFinInscription);
+
+			p = addDateField("Date du premier paiement", "premierCheque",notNull);
+			p.setValue(proposeDatePremierPaiement());
+
+			p = addDateField("Date du dernier paiement", "dernierCheque",notNull);
+			p.setValue(proposeDateDernierPaiement()); 
+		}
 	}
 
-	
+
 
 	private Date proposeDatePremierPaiement()
 	{
@@ -354,32 +332,32 @@ public class GestionContratEditorPart extends WizardFormPopup
 		{
 			return DateUtils.firstDayInMonth(modeleContrat.dateDebut); 
 		}
-		
+
 		if (modeleContrat.dateLivs.size()>0)
 		{
 			return DateUtils.firstDayInMonth(modeleContrat.dateLivs.get(0).dateLiv);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	private Date proposeDateDernierPaiement()
 	{
 		if (modeleContrat.dateFin!=null)
 		{
 			return DateUtils.firstDayInMonth(modeleContrat.dateFin); 
 		}
-		
+
 		if (modeleContrat.dateLivs.size()>0)
 		{
 			return DateUtils.firstDayInMonth(modeleContrat.dateLivs.get(modeleContrat.dateLivs.size()-1).dateLiv);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 
 	@Override
 	protected void performSauvegarder()
@@ -392,7 +370,7 @@ public class GestionContratEditorPart extends WizardFormPopup
 	{
 		return Step.class;
 	}
-	
+
 	/**
 	 * Validateur qui vérifie que le producteur posséde au moins un produit
 	 */
@@ -421,13 +399,13 @@ public class GestionContratEditorPart extends WizardFormPopup
 		{
 			return true;
 		}
-		
+
 		@Override
 		public AbstractField[] revalidateOnChangeOf()
 		{
 			return null;
 		}
 	}
-	
-	
+
+
 }

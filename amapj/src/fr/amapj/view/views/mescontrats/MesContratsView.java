@@ -289,14 +289,7 @@ public class MesContratsView extends FrontOfficeView implements  PopupSuppressio
 
 	private String formatLibelleContrat(ContratDTO c,boolean isInscription)
 	{
-		if (c.nature==NatureContrat.CARTE_PREPAYEE)
-		{
-			return formatLibelleContratCartePrepayee(c);
-		}
-		else
-		{
 			return formatLibelleContratAboEtLibre(c,isInscription);
-		}
 	}
 	
 	private String formatLibelleContratAboEtLibre(ContratDTO c,boolean isInscription)
