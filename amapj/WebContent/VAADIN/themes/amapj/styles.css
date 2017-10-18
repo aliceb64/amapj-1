@@ -10284,8 +10284,8 @@ div.v-layout.v-horizontal.v-widget {
 .amapj .v-panel {
 	background: white;
 	color: #474747;
-	border-radius: 6px;
-	border: 2px solid #c9c9c9;
+ 	border-radius: 0px; 
+  	border: 2px solid #FFFFFF; 
 	
 	
 	overflow: visible !important;
@@ -10402,6 +10402,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .amapj .v-panel-caption.v-horizontallayout .v-slot {
 	vertical-align: middle;
+	border: 0px; 
 }
 
 .amapj .v-panel-caption.v-horizontallayout .v-label {
