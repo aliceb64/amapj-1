@@ -18,7 +18,7 @@
  * 
  * 
  */
- package fr.amapj.view.views.login;
+package fr.amapj.view.views.login;
 
 import com.ejt.vaadin.loginform.LoginForm;
 import com.vaadin.server.ExternalResource;
@@ -44,93 +44,96 @@ import fr.amapj.view.engine.tools.BaseUiTools;
 import fr.amapj.view.engine.ui.AmapUI;
 import fr.amapj.view.engine.ui.ValoMenuLayout;
 
-public class LoginPart
-{
+public class LoginPart {
 	private PasswordManager passwordManager = new PasswordManager();
-		
+
 	private AmapUI ui;
-	
+
 	private int nbComposant = 6;
-	
-	public LoginPart()
-	{
-		
+
+	public LoginPart() {
+
 	}
-	
-	public void buildLoginView(ValoMenuLayout root,AmapUI ui,String loginFromUrl,String passwordFromUrl,String sudo)
-	{
+
+	public void buildLoginView(ValoMenuLayout root, AmapUI ui, String loginFromUrl, String passwordFromUrl,
+			String sudo) {
 		this.ui = ui;
 		CssLayout loginAera = root.prepareForLoginPage();
-		
+
 		VerticalLayout loginLayout = new VerticalLayout();
 		loginLayout.setSizeFull();
-		
-	
+
 		loginAera.setStyleName("login-backgroundimage");
 		loginAera.addComponent(loginLayout);
-		
+
 		// Recuperation des parametres
 		String nomAmap = new ParametresService().getParametres().nomAmap;
-		ui.getPage().setTitle(nomAmap); 
-		
-		// Zone de saisie login/password 
-		MyLoginForm myLoginForm = new MyLoginForm(loginFromUrl,passwordFromUrl,sudo,nomAmap);
+		ui.getPage().setTitle(nomAmap);
+
+		// Zone de saisie login/password
+		MyLoginForm myLoginForm = new MyLoginForm(loginFromUrl, passwordFromUrl, sudo, nomAmap);
 		myLoginForm.addStyleName("login-layout");
 		loginLayout.addComponent(myLoginForm);
 		loginLayout.setComponentAlignment(myLoginForm, Alignment.MIDDLE_CENTER);
 		loginLayout.setExpandRatio(myLoginForm, 10);
-		
+
 		Label l1 = new Label("Application fonctionnant avec AmapJ - ");
 		Link link = new Link("Plus d'infos", new ExternalResource("http://amapj.fr"));
 		link.setTargetName("_blank");
-		
+
 		HorizontalLayout hL = new HorizontalLayout();
 		hL.addComponent(l1);
 		hL.setComponentAlignment(l1, Alignment.MIDDLE_CENTER);
 		hL.addComponent(link);
 		hL.setComponentAlignment(link, Alignment.MIDDLE_CENTER);
 		hL.setMargin(true);
-		
+
 		loginLayout.addComponent(hL);
 		loginLayout.setComponentAlignment(hL, Alignment.BOTTOM_CENTER);
 		loginLayout.setExpandRatio(hL, 1);
-		
+
 		// Si les deux champs ont été remplis on tente une validation automatique
-		if ((passwordFromUrl!=null) && (loginFromUrl!=null))
-		{
+		if ((passwordFromUrl != null) && (loginFromUrl != null)) {
 			myLoginForm.login(loginFromUrl, passwordFromUrl);
 		}
-		
-	}
 
-	
+	}
 
 	/**
 	 * Gestion de l'appui sur mot de passe perdu
 	 */
-	protected void handleLostPwd()
-	{
+	protected void handleLostPwd() {
 		FormPopup.open(new PopupSaisieEmail());
 	}
-	
-	
+
 	/**
-	 * Zone de saisie du password 
+	 * 
+	 * Gestion de l'appui sur inscrivez-vous
+	 * 
+	 */
+
+	protected void handleSignUp()
+
+	{
+
+		FormPopup.open(new PopupInscription());
+
+	}
+
+	/**
+	 * Zone de saisie du password
 	 *
 	 */
-    public class MyLoginForm extends LoginForm 
-    {
-    	String loginFromUrl;
-    	String passwordFromUrl;
-    	String sudo;
-    	String nomAmap;
-    	
-    	VerticalLayout layout;
-    	TextField userNameField;
-    	
-    	
-		public MyLoginForm(String loginFromUrl, String passwordFromUrl,	String sudo,String nomAmap) 
-		{
+	public class MyLoginForm extends LoginForm {
+		String loginFromUrl;
+		String passwordFromUrl;
+		String sudo;
+		String nomAmap;
+
+		VerticalLayout layout;
+		TextField userNameField;
+
+		public MyLoginForm(String loginFromUrl, String passwordFromUrl, String sudo, String nomAmap) {
 			this.loginFromUrl = loginFromUrl;
 			this.passwordFromUrl = passwordFromUrl;
 			this.sudo = sudo;
@@ -138,123 +141,132 @@ public class LoginPart
 		}
 
 		@Override
-        protected Component createContent(TextField userNameField, PasswordField passwordField, Button loginButton) 
-        {
+		protected Component createContent(TextField userNameField, PasswordField passwordField, Button loginButton) {
 			Panel p = new Panel();
 			p.setWidth("100%");
-			
-            layout = new VerticalLayout();
-            layout.setSpacing(true);
-            layout.setMargin(true);
-            layout.setSizeFull();
-            
-            p.setContent(layout);
-            
-           
-            
-            Label section = new Label(nomAmap);
-            section.addStyleName("h2");
-            section.addStyleName("colored");
-            section.setSizeUndefined();
-            layout.addComponent(section);
-            layout.setComponentAlignment(section, Alignment.MIDDLE_CENTER);
 
-            this.userNameField = userNameField;
-            userNameField.setCaption("Adresse Email");
-            userNameField.setStyleName("name");
-            userNameField.setWidth("100%");
-            userNameField.setId("amapj.login.email");
-    		if (loginFromUrl!=null)
-    		{
-    			userNameField.setValue(loginFromUrl);
-    		}
-    		layout.addComponent(userNameField);
+			layout = new VerticalLayout();
+			layout.setSpacing(true);
+			layout.setMargin(true);
+			layout.setSizeFull();
 
-    		passwordField.setCaption("Mot de passe");
-    		passwordField.setStyleName("password");
-    		passwordField.setWidth("100%");
-    		passwordField.setId("amapj.login.password");
-    		if (passwordFromUrl!=null)
-    		{
-    			passwordField.setValue(passwordFromUrl);
-    		}
-    		layout.addComponent(passwordField);
-    		
-    		if ((loginFromUrl==null) || (loginFromUrl.length()==0))
-    		{
-    			userNameField.focus();
-    		}
-    		else
-    		{
-    			passwordField.focus();
-    		}
+			p.setContent(layout);
 
-    		BaseUiTools.addEmptyLine(layout);
-    		if (BaseUiTools.isCompactMode()==false)
-    		{
-    			BaseUiTools.addEmptyLine(layout);
-    			nbComposant++;
-    		}
-    		
-    		loginButton.setCaption("S'identifier");
-    		loginButton.setId("amapj.login.signin");
-    		if (sudo!=null)
-    		{
-    			loginButton.setCaption("SUDO");
-    		}
-    		loginButton.addStyleName("primary");
-    		
-    		
-    		layout.addComponent(loginButton);
-    		layout.setComponentAlignment(loginButton, Alignment.MIDDLE_CENTER);
-    		
-    		
-    		Button lostPwd = new Button("Mot de passe perdu ?");
-    		lostPwd.addStyleName("link");
-    		lostPwd.addStyleName("perdu");
-    		layout.addComponent(lostPwd);
-    		layout.setComponentAlignment(lostPwd, Alignment.BOTTOM_LEFT);
-    		
-    		
-    		
-    		lostPwd.addClickListener(new ClickListener()
-    		{
-    			@Override
-    			public void buttonClick(ClickEvent event)
-    			{
-    				handleLostPwd();
-    			}
-    		});
-            return p;
-        }
+			Label section = new Label(nomAmap);
+			section.addStyleName("h2");
+			section.addStyleName("colored");
+			section.setSizeUndefined();
+			layout.addComponent(section);
+			layout.setComponentAlignment(section, Alignment.MIDDLE_CENTER);
 
- 
-        @Override
-        protected void login(String userName, String password) 
-        {
-        	String msg = passwordManager.checkUser(userName, password,sudo); 
-    		
-    		if ( msg == null)
-    		{
-    			// Si le mot de passe est correct : on passe à la vue principale
-    			ui.buildMainView();
-    		} 
-    		else
-    		{	
-    			if (layout.getComponentCount() > nbComposant)
-    			{
-    				// Remove the previous error message
-    				layout.removeComponent(layout.getComponent(nbComposant));
-    			}
-    			// Add new error message
-    			Label error = new Label(msg, ContentMode.HTML);
-    			error.addStyleName("failure");
-    			error.setSizeUndefined();
-    			layout.addComponent(error);
-    			userNameField.focus();
-    		}
-        }
-    }
-	
-	
+			this.userNameField = userNameField;
+			userNameField.setCaption("Adresse Email");
+			userNameField.setStyleName("name");
+			userNameField.setWidth("100%");
+			userNameField.setId("amapj.login.email");
+			if (loginFromUrl != null) {
+				userNameField.setValue(loginFromUrl);
+			}
+			layout.addComponent(userNameField);
+
+			passwordField.setCaption("Mot de passe");
+			passwordField.setStyleName("password");
+			passwordField.setWidth("100%");
+			passwordField.setId("amapj.login.password");
+			if (passwordFromUrl != null) {
+				passwordField.setValue(passwordFromUrl);
+			}
+			layout.addComponent(passwordField);
+
+			if ((loginFromUrl == null) || (loginFromUrl.length() == 0)) {
+				userNameField.focus();
+			} else {
+				passwordField.focus();
+			}
+
+			BaseUiTools.addEmptyLine(layout);
+			if (BaseUiTools.isCompactMode() == false) {
+				BaseUiTools.addEmptyLine(layout);
+				nbComposant++;
+			}
+
+			loginButton.setCaption("S'identifier");
+			loginButton.setId("amapj.login.signin");
+			if (sudo != null) {
+				loginButton.setCaption("SUDO");
+			}
+			loginButton.addStyleName("primary");
+
+			layout.addComponent(loginButton);
+			layout.setComponentAlignment(loginButton, Alignment.MIDDLE_CENTER);
+
+			// Horizontal layout inside vertical to place 2 button
+
+			Panel pan = new Panel();
+
+			pan.setWidth("100%");
+
+			HorizontalLayout hLayout = new HorizontalLayout();
+
+			hLayout.setSpacing(true);
+
+			hLayout.setMargin(true);
+
+			hLayout.setSizeFull();
+
+			pan.setContent(hLayout);
+
+			Button lostPwd = new Button("Mot de passe perdu ?");
+			hLayout.addComponent(lostPwd);
+
+			hLayout.setComponentAlignment(lostPwd, Alignment.BOTTOM_LEFT);
+
+			Button signUp = new Button("Inscrivez-vous.");
+
+			hLayout.addComponent(signUp);
+
+			hLayout.setComponentAlignment(signUp, Alignment.BOTTOM_RIGHT);
+			layout.addComponent(pan);
+
+			signUp.addClickListener(new ClickListener()
+
+			{
+
+				@Override
+
+				public void buttonClick(ClickEvent event)
+
+				{
+
+					handleSignUp();
+
+				}
+
+			});
+
+			return p;
+		}
+
+		@Override
+		protected void login(String userName, String password) {
+			String msg = passwordManager.checkUser(userName, password, sudo);
+
+			if (msg == null) {
+				// Si le mot de passe est correct : on passe à la vue principale
+				ui.buildMainView();
+			} else {
+				if (layout.getComponentCount() > nbComposant) {
+					// Remove the previous error message
+					layout.removeComponent(layout.getComponent(nbComposant));
+				}
+				// Add new error message
+				Label error = new Label(msg, ContentMode.HTML);
+				error.addStyleName("failure");
+				error.setSizeUndefined();
+				layout.addComponent(error);
+				userNameField.focus();
+			}
+		}
+	}
+
 }
