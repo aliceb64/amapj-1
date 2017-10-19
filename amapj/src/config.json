@@ -1,4 +1,5 @@
 {
     "canConsumerChangePaymentValues": true,
-    "isRegisterEnabled": false
+    "isRegisterEnabled": false,
+    "displayNomCheque": false
 }
