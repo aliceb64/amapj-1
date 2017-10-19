@@ -94,6 +94,15 @@ Vous pouvez alors commencer la visite guidée de l'application en suivant ces in
 Comprendre le code de AmapJ
 Pour avoir plus d'informations sur le fonctionnement interne de AmapJ , certains détails sont présentés ici : Fonctionnement du code de AmapJ
 
+### Configuration du projet
+
+Modifier le fichier `AppInitializer.java` et mettre à jour le chemin de la ligne 152
+```java
+ParamUtils.init("/path/to/amapj/src/config.json");
+```
+
+Ensuite modifiez le fichier `config.json` pour personnaliser AmapJ comme vous le souhaitez !
+
 ### Configuration de l'édition des contrats en pdf
 
 SUR LINUX
