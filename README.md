@@ -35,9 +35,9 @@ Depuis eclipse OXYGEN, affichez la vue Git : Window -> show view -> other -> git
 
 Un nouveau bouton 'Clone a git repository' apparait dans la fenêtre Git
 ```
-URI : https://github.com/aliceb64/amapj
+URI : https://github.com/aliceb64/amapj-1
 Host : Github.com
-RepositoryPath : /aliceb64/amapj
+RepositoryPath : /aliceb64/amapj-1
 ```
 Faire Next et choisir comme destination l'emplacement de votre workspace C:\dev-amapj\workspace\amap
 
@@ -71,7 +71,7 @@ Faites ensuite File / New / Dynamic Web Project
 
 Saisir un nom de projet : amapj
 
-Décochez use default location et mettre chemin jusqu’au repo qui vient d’être cloné
+Décochez use default location et mettre chemin jusqu’au repo qui vient d’être cloné (sélectionner le sous-dossier amapj)
 
 Faites ensuite Finish
 
