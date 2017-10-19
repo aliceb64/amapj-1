@@ -94,3 +94,31 @@ Vous pouvez alors commencer la visite guidée de l'application en suivant ces in
 Comprendre le code de AmapJ
 Pour avoir plus d'informations sur le fonctionnement interne de AmapJ , certains détails sont présentés ici : Fonctionnement du code de AmapJ
 
+### Configuration de l'édition des contrats en pdf
+
+SUR LINUX
+
+pour installer wkhtmltopdf , la doc est ici 
+http://amapj.fr/docs_technique_install_vps.html
+paragraphe "Mise en place de wkhtmltopdf"
+
+Le chemin vers wkhtmltopdf est paramétré dans le fichier amapj.xml,
+avec une ligne du style
+
+<Parameter name=“wkhtmltopdf” value=“/usr/bin/wkhtmltopdf.sh”/>
+
+(voir le paragraphe Installation de l'application de la même page http://amapj.fr/docs_technique_install_vps.html)
+
+
+SUR UNE MACHINE DE DEV WINDOWS
+
+il faut installer wkhtmltopdf de façon classique,
+
+https://wkhtmltopdf.org/downloads.html
+
+normalement il se retrouve après l'install dans C:/Program Files/wkhtmltopdf
+ensuite il faut editer le fichier 
+/amapj/WebContent/META-INF/context.xml
+
+et ajouter la ligne 
+<Parameter name="wkhtmltopdf" value="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf"  />
