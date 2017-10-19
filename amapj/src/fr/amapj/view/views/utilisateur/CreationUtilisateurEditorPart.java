@@ -91,6 +91,8 @@ public class CreationUtilisateurEditorPart extends WizardFormPopup
 		// Champ 1
 		addTextField("Nom", "nom",notNull);
 
+		//nomCheque
+		addTextField("Nom Chèque", "nomCheque", notNull);
 		// Champ 2
 		addTextField("Prenom", "prenom",notNull);
 
@@ -141,6 +143,7 @@ public class CreationUtilisateurEditorPart extends WizardFormPopup
 		
 		String str = 	"Vous avez demandé à créer un nouvel utilisateur.<br/><br/>"+
 						"Nom = <b>"+utilisateurDTO.nom+"</b><br/>"+
+						"Nom Cheque = <b>"+utilisateurDTO.nomCheque+"</b><br/>"+
 						"Prenom= <b>"+utilisateurDTO.prenom+"</b><br/>"+
 						"E mail = <b>"+utilisateurDTO.email+"</b><br/><br/>";
 		
