@@ -1,3 +1,4 @@
 {
-    "canConsumerChangePaymentValues": true
+    "canConsumerChangePaymentValues": true,
+    "isRegisterEnabled": false
 }

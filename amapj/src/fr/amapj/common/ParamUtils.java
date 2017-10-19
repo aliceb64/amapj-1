@@ -12,7 +12,7 @@ public class ParamUtils {
     {
         Gson gson = new Gson();
         try {
-            ParamUtils.config.canConsumerChangePaymentValues = gson.fromJson(new FileReader(path), Config.class).canConsumerChangePaymentValues;
+            ParamUtils.config = gson.fromJson(new FileReader(path), Config.class);
         }
         catch (IOException e) {
             e.printStackTrace();
