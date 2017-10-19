@@ -149,7 +149,7 @@ public class AppInitializer implements ServletContextListener
 		logger.info("Fin de démarrage des bases additionnelles");
 				
 		// Récupération des config
-		ParamUtils.init("/Users/antoine/IUT/workspace/amapj/src/config.json");
+		ParamUtils.init("C:/Users/vfauroux/eclipse-workspace/git/amapj-1/amapj/src/config.json");
 		
 		// Demarrage des deamons
 		logger.info("Debut de démarrage des démons");
